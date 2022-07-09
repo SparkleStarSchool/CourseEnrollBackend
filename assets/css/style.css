@@ -1,0 +1,72 @@
+body{
+    color:#3600b3;
+}
+#title{
+    font-size: 1.4em;
+    font-weight: 500;
+    font-style: italic;
+    display: inline-block;
+}
+#titleImage{
+    padding-right: 5px;
+    margin-bottom: 10px;
+}
+
+.layout{
+    margin-top: 50px;
+}
+.rowLayout{
+    margin-top: 10px;
+}
+#inputCourse{
+    margin-top: 10px;
+}
+#courseDay, #courseTime{
+    width: 25%;
+}
+#courseDay, #courseTime, #addTime{
+    margin-bottom: 10px;
+}
+#addCourse:hover, #addTime:hover{
+    color:rgb(250, 209, 0);
+    cursor: pointer;
+}
+
+.buttonStyle{
+
+    color:#3600b3;
+    margin-bottom: 10px;
+}
+#copyLink{
+    padding:6px;
+}
+#viewResult{
+    padding: 6px 16px;
+}
+#saveCourse{
+    padding: 6px 17px;
+}
+#addCourse, #addTime{
+    font-weight: 500;
+    display: inline-block;
+}
+.warningBorder{
+    border: 2px solid red;
+}
+.deleteOption{
+    margin: 5px;
+    font-weight: 500;
+  }
+.deleteOption:hover {
+    color: red;
+    cursor: pointer;
+}
+#inputCourse{
+    width: 51%;
+}
+#courseName{
+    width: 25%;
+}
+#erollTable{
+    color:#3600b3;
+}
