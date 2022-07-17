@@ -8,11 +8,13 @@ $(document).ready(()=>{
     db.ref('course').child(courseID).get().then((snapshot)=>{
     let timeOptions= snapshot.val().timeOptions
     $("#courseTitle").text(snapshot.val().courseName)
-    timeOptions.forEach((option)=>{
-        let timeData = dayTime[option.split("_")[0]].slice(0,3)+' '+hourTime[option.split("_")[1]]
-        let $option = $(`<th scope="col">${timeData}</th>`)
-        $("#dataTitle").append($option)
-    })
+    if(typeof timeOptions!= 'undefined'){
+        timeOptions.forEach((option)=>{
+            let timeData = dayTime[option.split("_")[0]].slice(0,3)+' '+hourTime[option.split("_")[1]]
+            let $option = $(`<th scope="col">${timeData}</th>`)
+            $("#dataTitle").append($option)
+        })
+    }
     db.ref('enroll').orderByChild('courseID').equalTo(courseID).on("child_added", function(snapshot) {
         console.log(snapshot.val());
         let $row=$(`<tr></tr>`)
@@ -25,7 +27,6 @@ $(document).ready(()=>{
         timeOptions.forEach((option)=>{
             console.log(option)
             if(timeSelect.indexOf(option)==-1){
-                // put 'No' in the table
                 console.log("nnn", option)
                 $row.append($(`<td></td>`))
             }else{

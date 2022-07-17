@@ -55,7 +55,7 @@ $(document).ready(()=>{
             .child(courseID)
             .set({ courseName: courseName})
             .then(() => {
-               // refresh page
+                // refresh page
                 location.reload();
             })
         }else{
@@ -89,23 +89,29 @@ $(document).ready(()=>{
     // copy link
     $("#copyLink").on("click",()=>{
         $("#courseName").removeClass('warningBorder')
+        $("#courseDay").removeClass('warningBorder')
+        $("#courseTime").removeClass('warningBorder')
         let courseID=$("#courseName").val()
-        if(courseID){
+        let times=$("#timeList").children().length
+        if(courseID && times!=0){
             let courseKey=courseID.split('_')[1]
             // url for client 
-            let url=""+courseKey
+            let url="https://sparklestarschool.github.io/CourseEnroll/index.html?course="+courseKey
             navigator.clipboard.writeText(url)
             .then(() => {
-                $(".modal-body").find("p").text("Copied !")
+                $("#confirmModal").find(".modal-body").find("p").text("Copied !")
                 $("#confirmModal").modal();
             })
             .catch(err => {
-                $(".modal-body").find("p").text("Error !")
+                $("#confirmModal").find(".modal-body").find("p").text("Error !")
                 $("#confirmModal").modal();
             })
             
-        }else{
+        }else if(!courseID){
             $("#courseName").addClass('warningBorder')
+        }else{
+            $("#courseDay").addClass('warningBorder')
+            $("#courseTime").addClass('warningBorder')
         }
         
     })
@@ -151,8 +157,7 @@ $(document).ready(()=>{
                 for(let [key, value] of Object.entries(snapshot.val())){
                     if(key==courseID){
                         db.ref("course").child(key).update({timeOptions: timeOptions}).then(()=>{
-                            
-                            $(".modal-body").find("p").text("Saved !")
+                            $("#confirmModal").find(".modal-body").find("p").text("Saved !")
                             $("#confirmModal").modal();
                         })
                     }
@@ -160,7 +165,36 @@ $(document).ready(()=>{
             })
         }
     })
+    $('#deleteCourse').on('click', ()=>{
+        let courseID = $("#courseName").val()
+        if(courseID==''){
+            $("#courseName").addClass('warningBorder')
+        }else{
+            $("#deleteModal").find(".modal-body").find("p").text("Are you sure to delete this course ?")
+            $("#deleteModal").modal();
+        }
+    })
+
+    // for delete
+    $('#okButton').on('click', ()=>{
+        let courseID = $("#courseName").val()
+        // delete the student infor for this course
+        db.ref('enroll').get().then((snapshot)=>{
+            console.log(snapshot.val())
+            for(let [key, value] of Object.entries(snapshot.val())){
+                console.log(key, value)
+                if(value.courseID==courseID){
+                    db.ref("enroll").child(key).remove()
+                }
+            }
+        })
+        // delete this course 
+        db.ref('course').child(courseID).remove().then(()=>{
+            location.reload()
+        })
+    })
 })
+
 const getRandomKey = () => {
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
